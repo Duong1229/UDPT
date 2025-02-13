@@ -75,10 +75,10 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
                 String name = rs.getString("name");
                 String gender = rs.getString("gender");
                 int age = rs.getInt("age");
+                String hometown = rs.getString("hometown");
                 String major = rs.getString("major");
                 String academicYear = rs.getString("academicYear");
-                String hometown = rs.getString("hometown");
-                students.add(new Student(id, name, gender, age, major, academicYear, hometown));
+                students.add(new Student(id, name, gender, age, hometown, major, academicYear));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -121,6 +121,7 @@ public class StudentController {
             try {
                 studentService.updateStudent(selectedStudent);
                 loadStudentList();
+                showSuccess("Success", "Cập nhật học sinh thành công!");
             } catch (RemoteException e) {
                 showError("Error", "Cập nhật học sinh thất bại.");
                 e.printStackTrace();
@@ -135,6 +136,7 @@ public class StudentController {
             try {
                 studentService.deleteStudent(selectedStudent.getId());
                 loadStudentList();
+                showSuccess("Success", "Xóa sinh viên thành công");
             } catch (RemoteException e) {
                 showError("Error", "Không thể xóa học sinh.");
                 e.printStackTrace();
