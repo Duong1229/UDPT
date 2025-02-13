@@ -27,9 +27,9 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getGender());
             stmt.setInt(3, student.getAge());
+            stmt.setString(6, student.getHometown());
             stmt.setString(4, student.getMajor());
             stmt.setString(5, student.getAcademicYear());
-            stmt.setString(6, student.getHometown());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
