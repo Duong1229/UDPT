@@ -9,4 +9,6 @@ module com.example.qlhs_udpt {
     exports com.qlhs_udpt.controller;
     opens com.qlhs_udpt.controller to javafx.fxml;
     exports com.qlhs_udpt.rmi;
+    opens com.qlhs_udpt.model to javafx.base, javafx.fxml;
+
 }

@@ -2,6 +2,9 @@ package com.qlhs_udpt.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.cell.PropertyValueFactory;
 import com.qlhs_udpt.rmi.StudentService;
 import com.qlhs_udpt.model.Student;
 import java.rmi.Naming;
@@ -18,10 +21,28 @@ public class StudentController {
     @FXML
     private TextField ageField;
     @FXML
-    private ListView<Student> studentListView;
-
+    private TextField majorField;
+    @FXML
+    private TextField hometownField;
+    @FXML
+    private TextField academicYearField;
+    @FXML
+    private TableView<Student> studentTableView;
+    @FXML
+    private TableColumn<Student, Integer> idColumn;
+    @FXML
+    private TableColumn<Student, String> nameColumn;
+    @FXML
+    private TableColumn<Student, String> genderColumn;
+    @FXML
+    private TableColumn<Student, Integer> ageColumn;
+    @FXML
+    private TableColumn<Student, String> hometownColumn;
+    @FXML
+    private TableColumn<Student, String> majorColumn;
+    @FXML
+    private TableColumn<Student, String> academicYearColumn;
     private StudentService studentService;
-
     public StudentController() {
         super();
         try {
@@ -33,6 +54,14 @@ public class StudentController {
     }
     @FXML
     public void initialize() {
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
+        hometownColumn.setCellValueFactory(new PropertyValueFactory<>("hometown"));
+        majorColumn.setCellValueFactory(new PropertyValueFactory<>("major"));
+        academicYearColumn.setCellValueFactory(new PropertyValueFactory<>("academicYear"));
+
         try {
             loadStudentList();
         } catch (RemoteException e) {
@@ -43,7 +72,8 @@ public class StudentController {
     private void loadStudentList() throws RemoteException {
         try {
             List<Student> students = studentService.getAllStudents();
-            studentListView.getItems().setAll(students);
+            ObservableList<Student> studentList = FXCollections.observableArrayList(students);
+            studentTableView.setItems(studentList);
         } catch (RemoteException e) {
             showError("Error", "Tải danh sách từ server thất bại.");
             throw e;
@@ -53,18 +83,21 @@ public class StudentController {
     public void addStudent(MouseEvent event) {
         String name = nameField.getText();
         String gender = genderField.getText();
-        int age = 0;
+        String major = majorField.getText();
+        String academicYear = academicYearField.getText();
+        String hometown = hometownField.getText();
+        int age;
         try {
             age = Integer.parseInt(ageField.getText());
         } catch (NumberFormatException e) {
-            showError("Input Error", "NHập đúng giá trị của tuổi.");
+            showError("Input Error", "Nhập đúng giá trị của tuổi.");
             return;
         }
-
-        Student student = new Student(0, name, gender, age);
+        Student student = new Student(0, name, gender, age, major, hometown, academicYear );
         try {
             studentService.addStudent(student);
             loadStudentList();
+            showSuccess("Success", "Thêm học sinh thành công!");
         } catch (RemoteException e) {
             showError("Error", "Thêm học sinh thất bại.");
             e.printStackTrace();
@@ -72,14 +105,17 @@ public class StudentController {
     }
     @FXML
     public void updateStudent(MouseEvent event) {
-        Student selectedStudent = studentListView.getSelectionModel().getSelectedItem();
+        Student selectedStudent = studentTableView.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
             selectedStudent.setName(nameField.getText());
             selectedStudent.setGender(genderField.getText());
+            selectedStudent.setMajor(hometownField.getText());
+            selectedStudent.setAcademicYear(majorField.getText());
+            selectedStudent.setHometown(academicYearField.getText());
             try {
                 selectedStudent.setAge(Integer.parseInt(ageField.getText()));
             } catch (NumberFormatException e) {
-                showError("Input Error", "NHập đúng giá trị của tuổi.");
+                showError("Input Error", "Nhập đúng giá trị của tuổi.");
                 return;
             }
             try {
@@ -91,9 +127,10 @@ public class StudentController {
             }
         }
     }
+
     @FXML
     public void deleteStudent(MouseEvent event) {
-        Student selectedStudent = studentListView.getSelectionModel().getSelectedItem();
+        Student selectedStudent = studentTableView.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
             try {
                 studentService.deleteStudent(selectedStudent.getId());
@@ -106,15 +143,16 @@ public class StudentController {
             showError("Selection Error", "Không có học sinh để truy cập.");
         }
     }
-
     @FXML
     public void exportStudentListToFile(MouseEvent event) {
         try {
             List<Student> students = studentService.getAllStudents();
             BufferedWriter writer = new BufferedWriter(new FileWriter("student_list.txt"));
-            writer.write("ID\tName\tGender\tAge\n");
+            writer.write("DANH SÁCH SINH VIÊN \n");
+            writer.write("ID\tHọ và tên\tGiới tính\tTuổi\tQuê quán\tNgành học\tKhóa học \n");
             for (Student student : students) {
-                writer.write(student.getId() + "\t" + student.getName() + "\t" + student.getGender() + "\t" + student.getAge() + "\n");
+                writer.write(student.getId() + "\t" + student.getName() + "\t" + student.getGender() + "\t" + student.getAge() + "\t" + student.getHometown() + "\t" + student.getMajor() + "\t" + student.getAcademicYear() + "\n");
+
             }
             writer.close();
             showSuccess("Export Successful", "Xuất danh sách thành công.");
@@ -122,10 +160,11 @@ public class StudentController {
             showError("Error", "Xuất danh sách thất bại.");
             e.printStackTrace();
         } catch (IOException e) {
-            showError("File Error", "Không thể xuâất file.");
+            showError("File Error", "Không thể xuất file.");
             e.printStackTrace();
         }
     }
+
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

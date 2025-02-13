@@ -2,7 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -11,35 +12,56 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20; -fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.qlhs_udpt.controller.StudentController">
-
     <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Quản lý thông tin sinh viên" />
-
     <GridPane alignment="CENTER" hgap="10" vgap="10">
         <Label text="Họ và tên" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="nameField" prefWidth="300" promptText="Nhập tên" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="nameField" prefWidth="200" promptText="Nhập tên" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
         <Label text="Giới tính" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="genderField" prefWidth="300" promptText="Nam/ Nữ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="genderField" prefWidth="200" promptText="Nam/ Nữ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
         <Label text="Tuổi" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <TextField fx:id="ageField" prefWidth="300" promptText="Nhập tuổi" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <columnConstraints>
-         <ColumnConstraints />
-         <ColumnConstraints />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
+        <TextField fx:id="ageField" prefWidth="200" promptText="Nhập tuổi" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Ngành học" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <TextField fx:id="majorField" prefWidth="200" promptText="Nhập ngành học" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+        <Label text="Khóa học" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <TextField fx:id="academicYearField" prefWidth="200" promptText="Nhập khóa học" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+        <Label text="Quê quán" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <TextField fx:id="hometownField" prefWidth="200" promptText="Nhập quê quán" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+        <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
     </GridPane>
 
+
     <HBox alignment="CENTER" spacing="10">
-        <Button onAction="#addStudent" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="Thêm sinh viên" />
-        <Button onAction="#updateStudent" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="Cập nhật sinh viên" />
-        <Button onAction="#deleteStudent" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="Xóa sinh viên" />
-        <Button onAction="#exportStudentListToFile" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="In ra danh sách" />
+        <Button onMouseClicked="#addStudent" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="Thêm sinh viên" />
+        <Button onMouseClicked="#updateStudent" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="Cập nhật sinh viên" />
+        <Button onMouseClicked="#deleteStudent" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="Xóa sinh viên" />
+        <Button onMouseClicked="#exportStudentListToFile" prefWidth="140" style="-fx-background-color: #333399; -fx-text-fill: white;" text="In ra danh sách" />
     </HBox>
 
-    <ListView fx:id="studentListView" prefHeight="250" prefWidth="500" style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-color: white;" />
+    <TableView fx:id="studentTableView" prefHeight="250" prefWidth="500" style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-color: white;">
+        <columns>
+            <TableColumn fx:id="idColumn" prefWidth="30.399993896484375" text="ID" />
+            <TableColumn fx:id="nameColumn" prefWidth="105.60003662109375" text="Họ và tên" />
+            <TableColumn fx:id="genderColumn" prefWidth="53.60003662109375" text="Giới tính" />
+            <TableColumn fx:id="ageColumn" prefWidth="42.40008544921875" text="Tuổi" />
+            <TableColumn fx:id="hometownColumn" prefWidth="123.199951171875" text="Quê quán" />
+            <TableColumn fx:id="majorColumn" prefWidth="118.4000244140625" text="Ngành học" />
+            <TableColumn fx:id="academicYearColumn" prefWidth="109.59991455078125" text="Khóa học" />
+        </columns>
+    </TableView>
 </VBox>

@@ -22,11 +22,14 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
     }
     @Override
     public void addStudent(Student student) throws RemoteException {
-        String query = "INSERT INTO students (name, gender, age) VALUES (?, ?, ?)";
+        String query = "INSERT INTO students (name, gender, age, major, academicYear, hometown) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getGender());
             stmt.setInt(3, student.getAge());
+            stmt.setString(4, student.getMajor());
+            stmt.setString(5, student.getAcademicYear());
+            stmt.setString(6, student.getHometown());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -35,12 +38,15 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
     }
     @Override
     public void updateStudent(Student student) throws RemoteException {
-        String query = "UPDATE students SET name = ?, gender = ?, age = ? WHERE id = ?";
+        String query = "UPDATE students SET name = ?, gender = ?, age = ?, major = ?, academicYear = ?, hometown = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getGender());
             stmt.setInt(3, student.getAge());
-            stmt.setInt(4, student.getId());
+            stmt.setString(4, student.getHometown());
+            stmt.setString(5, student.getMajor());
+            stmt.setString(6, student.getAcademicYear());
+            stmt.setInt(7, student.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,7 +75,10 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
                 String name = rs.getString("name");
                 String gender = rs.getString("gender");
                 int age = rs.getInt("age");
-                students.add(new Student(id, name, gender, age));
+                String major = rs.getString("major");
+                String academicYear = rs.getString("academicYear");
+                String hometown = rs.getString("hometown");
+                students.add(new Student(id, name, gender, age, major, academicYear, hometown));
             }
         } catch (SQLException e) {
             e.printStackTrace();
