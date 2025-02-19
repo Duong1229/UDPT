@@ -22,14 +22,14 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
     }
     @Override
     public void addStudent(Student student) throws RemoteException {
-        String query = "INSERT INTO students (name, gender, age, major, academicYear, hometown) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO students (name, gender, age, hometown, major, academicYear) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getGender());
             stmt.setInt(3, student.getAge());
-            stmt.setString(6, student.getHometown());
-            stmt.setString(4, student.getMajor());
-            stmt.setString(5, student.getAcademicYear());
+            stmt.setString(4, student.getHometown());
+            stmt.setString(5, student.getMajor());
+            stmt.setString(6, student.getAcademicYear());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,7 +38,7 @@ public class StudentServiceImpl extends UnicastRemoteObject implements StudentSe
     }
     @Override
     public void updateStudent(Student student) throws RemoteException {
-        String query = "UPDATE students SET name = ?, gender = ?, age = ?, major = ?, academicYear = ?, hometown = ? WHERE id = ?";
+        String query = "UPDATE students SET name = ?, gender = ?, age = ?, hometown = ?, major = ?, academicYear = ? WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, student.getName());
             stmt.setString(2, student.getGender());

@@ -83,9 +83,9 @@ public class StudentController {
     public void addStudent(MouseEvent event) {
         String name = nameField.getText();
         String gender = genderField.getText();
+        String hometown = hometownField.getText();
         String major = majorField.getText();
         String academicYear = academicYearField.getText();
-        String hometown = hometownField.getText();
         int age;
         try {
             age = Integer.parseInt(ageField.getText());
@@ -93,10 +93,11 @@ public class StudentController {
             showError("Input Error", "Nhập đúng giá trị của tuổi.");
             return;
         }
-        Student student = new Student(0, name, gender, age, major, hometown, academicYear );
+        Student student = new Student(0, name, gender, age, hometown, major, academicYear );
         try {
             studentService.addStudent(student);
             loadStudentList();
+            clearFields();
             showSuccess("Success", "Thêm học sinh thành công!");
         } catch (RemoteException e) {
             showError("Error", "Thêm học sinh thất bại.");
@@ -109,9 +110,9 @@ public class StudentController {
         if (selectedStudent != null) {
             selectedStudent.setName(nameField.getText());
             selectedStudent.setGender(genderField.getText());
-            selectedStudent.setMajor(hometownField.getText());
-            selectedStudent.setAcademicYear(majorField.getText());
-            selectedStudent.setHometown(academicYearField.getText());
+            selectedStudent.setHometown(hometownField.getText());
+            selectedStudent.setMajor(majorField.getText());
+            selectedStudent.setAcademicYear(academicYearField.getText());
             try {
                 selectedStudent.setAge(Integer.parseInt(ageField.getText()));
             } catch (NumberFormatException e) {
@@ -121,6 +122,7 @@ public class StudentController {
             try {
                 studentService.updateStudent(selectedStudent);
                 loadStudentList();
+                clearFields();
                 showSuccess("Success", "Cập nhật học sinh thành công!");
             } catch (RemoteException e) {
                 showError("Error", "Cập nhật học sinh thất bại.");
@@ -181,4 +183,13 @@ public class StudentController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    private void clearFields() {
+        nameField.clear();
+        genderField.clear();
+        ageField.clear();
+        majorField.clear();
+        hometownField.clear();
+        academicYearField.clear();
+    }
+
 }

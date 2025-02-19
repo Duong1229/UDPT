@@ -5,7 +5,7 @@ CREATE TABLE students (
     name VARCHAR(100),
     gender VARCHAR(10),
     age INT,
+    hometown VARCHAR(50),
     major VARCHAR(100),
-    academicYear VARCHAR(20),
-    hometown VARCHAR(50)
+    academicYear VARCHAR(20)
 );
